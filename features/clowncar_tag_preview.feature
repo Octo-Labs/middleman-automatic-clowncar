@@ -53,3 +53,18 @@ Feature: Generating SVG clowncars during preview mode
     And I should see '<img src="/images/photos/test-image/test-image-small.jpg">'
     And I should see "<![endif]-->"
 
+  Scenario: With prevent_upscaling
+    Given a fixture app "automatic-clowncar-app"
+    And a file named "source/index.html.erb" with:
+    """
+    <%= automatic_clowncar_tag "photos/test-image.jpg", :host => "http://localhost:4567/", :prevent_upscaling => true %>
+    """
+    And the Server is running at "automatic-clowncar-app"
+    When I go to "/index.html"
+    Then I should see "<object"
+    And I should see "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-small.jpg);%7D%7D"
+    And I should see "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
+    And I should see "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-large.jpg);%7D%7D"
+    And I should see "max-width:1576px"
+    
+

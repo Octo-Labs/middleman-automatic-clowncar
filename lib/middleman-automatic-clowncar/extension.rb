@@ -128,6 +128,12 @@ module Middleman
         output.join("")
       end
 
+      def get_physical_image_size(name)
+        main_path = File.join(app.images_dir,name)
+        main_abs_path = File.join(app.source_dir,main_path)
+        FastImage.size(main_abs_path, :raise_on_failure => true)
+      end
+
       def get_image_sizes(name, options)
         puts "getting images sizes for #{name}"
 
@@ -143,8 +149,12 @@ module Middleman
 
         
         sizes = {}
-        Extension.options_hash[:sizes].each_pair do |sname,width|
-          sizes[width] = "#{basename}-#{sname}#{extname}"
+        Extension.options_hash[:sizes].each_pair do |sname,swidth|
+          sizes[swidth] = "#{basename}-#{sname}#{extname}"
+        end
+
+        if options[:include_original]
+          sizes[width] = "../#{basename}#{extname}"
         end
 
         puts "-"*30
@@ -199,12 +209,22 @@ module Middleman
             internal = %{<!--[if lte IE 8]><img src="#{fallback_path}"><![endif]-->}
           end
 
+          object_style = ""
+          if options.has_key?(:prevent_upscaling) && options[:prevent_upscaling]
+            if options.has_key?(:include_original) && options[:include_original]
+              width, height = extensions[:automatic_clowncar].get_physical_image_size(name)
+            else
+              width = extensions[:automatic_clowncar].options.sizes.map{|k,v| v }.sort.last
+            end
+            object_style = "max-width:#{width}px;"
+          end
+
           if options.has_key?(:inline) && (options[:inline] === false)
             url = asset_path(:images, "#{name}.svg")
-            %Q{<object type="image/svg+xml" data="#{url}">#{internal}</object>}
+            %Q{<object type="image/svg+xml" style="#{object_style}" data="#{url}">#{internal}</object>}
           else
             data = extensions[:automatic_clowncar].generate_svg(name, true, options)
-            %Q{<object type="image/svg+xml" data="data:image/svg+xml,#{::URI.escape(data)}">#{internal}</object>}
+            %Q{<object type="image/svg+xml" style="#{object_style}" data="data:image/svg+xml,#{::URI.escape(data)}">#{internal}</object>}
           end
         end
 
@@ -247,7 +267,7 @@ module Middleman
             specs = ::Middleman::AutomaticClowncar::ThumbnailGenerator.specs(path, sizes)
             specs.map do |name, spec|
               resource = nil
-              # puts "#{path}: #{spec[:name]}: #{file}"
+              #puts "#{path}: #{spec[:name]}: #{file}"
               resource = Middleman::Sitemap::Resource.new(@app.sitemap, spec[:name], file) unless name == :original
             end
           end.flatten.reject {|resource| resource.nil? }
@@ -264,13 +284,13 @@ module Middleman
         # @param [Class] app
         # @param [Hash] options
         def initialize(app, options={})
+          puts "iniit for Raaaaaaaaaaaaaaaaaaaaaaaaaack"
           @app = app
           @options = options
 
           files = Dir["#{options[:images_source_dir]}/**/*.{#{options[:filetypes].join(',')}}"]
 
           @original_map = ThumbnailGenerator.original_map_for_files(files, options[:sizes])
-
         end
 
         # Rack interface
@@ -283,14 +303,17 @@ module Middleman
 
           path_on_disk = File.join(@options[:source_dir], path)
 
+          puts "calling!!!!!!"
+          puts "path_on_disk = #{path_on_disk}"
+          puts "original_map[path_on_disk] = #{@original_map[path_on_disk]}"
           #TODO: caching
           if original_specs = @original_map[path_on_disk]
             original_file = original_specs[:original]
             spec = original_specs[:spec]
-            if spec.has_key? :sizes
+            if spec.has_key? :dimensions
               image = ::Magick::Image.read(original_file).first
               blob = nil
-              image.change_geometry(spec[:sizes]) do |cols, rows, img|
+              image.change_geometry(spec[:dimensions]) do |cols, rows, img|
                 img = img.resize(cols, rows)
                 img = img.sharpen(0.5, 0.5)
                 blob = img.to_blob
