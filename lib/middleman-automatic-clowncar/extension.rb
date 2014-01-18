@@ -23,7 +23,6 @@ module Middleman
         # Clowncar bits
         require 'uri'
         require 'pathname'
-        @svg_files_to_generate = []
         @ready = false
 
         #Thumbnailer
@@ -37,11 +36,11 @@ module Middleman
           namespace = Extension.options_hash[:namespace_directory].join(',')
 
           dir = Pathname.new(File.join(source_dir, images_dir))
+          glob = "#{dir}/#{namespace}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
+          files = Dir[glob]
 
+          # don't build the files until after build
           after_build do |builder|
-            glob = "#{dir}/#{namespace}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
-            files = Dir[glob]
-
             files.each do |file|
               path = file.gsub(source_dir, '')
               specs = ThumbnailGenerator.specs(path, sizes)
@@ -71,6 +70,7 @@ module Middleman
       end
 
       def get_image_path(name, path, is_relative, fallback_host)
+        puts "@@@@@@@ calling get_image_path for #{path}"
         begin
           uri = URI(path)
         rescue URI::InvalidURIError
@@ -154,6 +154,7 @@ module Middleman
 
 
       def generate_svg(name, is_relative, options)
+        puts "name for generate_svg = #{name}"
         puts "options for generate_svg = #{options}"
         sizes, width, height = get_image_sizes(name, options)
         
@@ -179,55 +180,22 @@ module Middleman
       end
 
       def generate_clowncar(name, options={})
-        @svg_files_to_generate << [name, options]
+        Extension.svg_files_to_generate << [name, options]
       end
 
-      def manipulate_resource_list(resources)
-        return resources unless @ready
-        
-        resources + @svg_files_to_generate.map do |name, options|
-          file_name = File.join(app.images_dir, "#{name}.svg")
-          output = generate_svg(name, false, options)
-          ClownCarResource.new(app.sitemap, file_name, output)
-        end
-      end
+      
 
 
 
-      class ClownCarResource < ::Middleman::Sitemap::Resource
-        def initialize(store, path, svg=nil)
-          super(store, path, nil)
-
-          @svg = svg
-        end
-
-        def render(opts={}, locs={}, &block)
-          @svg
-        end
-
-        def ignored?
-          false
-        end
-
-        def raw_data
-          {}
-        end
-
-        def metadata
-          @local_metadata
-        end
-
-        def binary?
-          false
-        end
-      end
-
+      
       helpers do
         def automatic_clowncar_tag(name, options={})
           internal = ""
 
           if options[:fallback]
-            fallback_path = extensions[:automatic_clowncar].get_image_path(name, options[:fallback], true, false)
+            
+            fallback = File.basename thumbnail_url(name,:small)
+            fallback_path = extensions[:automatic_clowncar].get_image_path(name, fallback, true, false)
             internal = %{<!--[if lte IE 8]><img src="#{fallback_path}"><![endif]-->}
           end
 
