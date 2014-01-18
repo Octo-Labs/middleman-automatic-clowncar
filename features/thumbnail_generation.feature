@@ -1,6 +1,6 @@
 Feature: Generating thumbnails
 
-  Scenario: Basic useage
+  Scenario: Basic useage during build
     Given a fixture app "automatic-clowncar-app"
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
     When I cd to "build"
@@ -9,3 +9,11 @@ Feature: Generating thumbnails
     Then the following files should exist:
       | images/photos/test-image/test-image-small.jpg  |
       | images/photos/test-image/test-image-medium.jpg |
+
+  Scenario: Basic useage during preview
+    Given a fixture app "automatic-clowncar-app"
+    And the Server is running at "automatic-clowncar-app"
+    When I go to "/images/photos/test-image/test-image-small.jpg"
+    Then the content type should be "image/jpeg"
+    When I go to "/images/photos/test-image/test-image-medium.jpg"
+    Then the content type should be "image/jpeg"
