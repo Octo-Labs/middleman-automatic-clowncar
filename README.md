@@ -1,6 +1,6 @@
 # Middleman::Automatic::Clowncar
 
-TODO: Write a gem description
+Automatically generated responsive images for Middleman.
 
 ## Installation
 
@@ -18,7 +18,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Activate the module in `config.rb` and pass in config options.
+
+```ruby
+activate :automatic_clowncar,
+  :sizes => {
+    :small => 200,
+    :medium => 400,
+    :large => 600
+  },
+  :namespace_directory => %w(photos)
+```
+
+Then in a template you can use the `automatic_clowncar_tag` to display a
+responsive image.
+
+```erb
+<%= automatic_clowncar_tag 'photos/my-photo.jpg' %>
+```
+
 
 ## Contributing
 
