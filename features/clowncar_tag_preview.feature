@@ -1,7 +1,7 @@
 Feature: Generating SVG clowncars during preview mode
 
   Scenario: Basic command
-    Given a fixture app "clowncar-app"
+    Given a fixture app "automatic-clowncar-app"
     And a file named "source/index.html.erb" with:
     """
     <%= clowncar_tag "logo", :host => "http://localhost:4567/" %>

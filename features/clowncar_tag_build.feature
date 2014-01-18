@@ -1,23 +1,22 @@
 Feature: Generating SVG clowncars during preview mode
 
   Scenario: Basic command
-    Given a fixture app "clowncar-app"
+    Given a fixture app "automatic-clowncar-app"
     And a file named "source/index.html.erb" with:
     """
-    <%= clowncar_tag "logo", :host => "http://localhost:4567/" %>
+    <%= automatic_clowncar_tag "photos/test-image.jpg", :host => "http://localhost:4567/" %>
     """
-    Given a successfully built app at "clowncar-app" with flags "--verbose"
+    Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
     When I cd to "build"
-    Then the following files should not exist:
-      | images/logo.svg                                    |
+    #Then the following files should not exist:
+    #  | images/photos/test-image.jpg                       |
     Then the following files should exist:
-      | images/logo/small.png                              |
-      | images/logo/medium.png                             |
-      | images/logo/big.png                                |
+      | images/photos/test-image/test-image-small.jpg      |
+      | images/photos/test-image/test-image-medium.jpg      |
     Then the file "index.html" should contain "<object"
-    And the file "index.html" should contain "@media%20screen%20and%20(max-width:300px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/logo/small.png);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:301px)%20and%20(max-width:600px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/logo/medium.png);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:601px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/logo/big.png);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-small.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-large.jpg);%7D%7D"
 
   Scenario: Basic command with asset_host
     Given a fixture app "clowncar-app"

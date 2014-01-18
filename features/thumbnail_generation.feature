@@ -9,6 +9,7 @@ Feature: Generating thumbnails
     Then the following files should exist:
       | images/photos/test-image/test-image-small.jpg  |
       | images/photos/test-image/test-image-medium.jpg |
+      | images/photos/test-image/test-image-large.jpg |
 
   Scenario: Basic useage during preview
     Given a fixture app "automatic-clowncar-app"
@@ -16,4 +17,6 @@ Feature: Generating thumbnails
     When I go to "/images/photos/test-image/test-image-small.jpg"
     Then the content type should be "image/jpeg"
     When I go to "/images/photos/test-image/test-image-medium.jpg"
+    Then the content type should be "image/jpeg"
+    When I go to "/images/photos/test-image/test-image-large.jpg"
     Then the content type should be "image/jpeg"

@@ -6,8 +6,9 @@ require "middleman-automatic-clowncar/version"
   require "middleman-automatic-clowncar/extension"
   ::Middleman::AutomaticClowncar::Extension
 
-  require "middleman-automatic-clowncar/thumbnailer-extension"
-  ::Middleman::AutomaticClowncar::Thumbnailer
+  #require "middleman-automatic-clowncar/thumbnailer-extension"
+  #::Middleman::AutomaticClowncar::Thumbnailer
+
 
 end
 
