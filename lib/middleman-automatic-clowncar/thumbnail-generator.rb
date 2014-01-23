@@ -24,13 +24,24 @@ module Middleman
       end
 
       def generate(source_dir, output_dir, origin, specs)
-        image = ::Magick::Image.read(File.join(source_dir, origin)).first
+        image = nil
         specs.each do |name, spec|
           if spec.has_key? :dimensions then
-            image.change_geometry(spec[:dimensions]) do |cols, rows, img|
-              img = img.resize(cols, rows)
-              img = img.sharpen(0.5, 0.5)
-              img.write File.join(output_dir, spec[:name])
+            dest_path = File.join(output_dir,spec[:name])
+            dest_dir = File.dirname(dest_path)
+            FileUtils.mkdir_p dest_dir # if it exists, nothing happens
+            origin_path = File.join(source_dir,origin)
+
+            origin_mtime = File.mtime(origin_path)
+            if origin_mtime != File.mtime(dest_path)
+              puts "Generating automatic clowncar for #{spec[:name]}"
+              image ||= ::Magick::Image.read(origin_path).first
+              image.change_geometry(spec[:dimensions]) do |cols, rows, img|
+                img = img.resize(cols, rows)
+                img = img.sharpen(0.5, 0.5)
+                img.write File.join(dest_path)
+              end
+              File.utime(origin_mtime, origin_mtime, dest_path)
             end
           end
         end
@@ -44,6 +55,8 @@ module Middleman
           end
           memo
         end
+        # puts map
+        map
       end
     end
   end

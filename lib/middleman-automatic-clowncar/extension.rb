@@ -36,11 +36,12 @@ module Middleman
           namespace = Extension.options_hash[:namespace_directory].join(',')
 
           dir = Pathname.new(File.join(source_dir, images_dir))
-          glob = "#{dir}/#{namespace}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
+          glob = "#{dir}/{#{namespace}}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
           files = Dir[glob]
 
           # don't build the files until after build
           after_build do |builder|
+            puts "Generating automatic clowncar images"
             files.each do |file|
               path = file.gsub(source_dir, '')
               specs = ThumbnailGenerator.specs(path, sizes)
@@ -70,7 +71,7 @@ module Middleman
       end
 
       def get_image_path(name, path, is_relative, fallback_host)
-        puts "@@@@@@@ calling get_image_path for #{path}"
+        #puts "@@@@@@@ calling get_image_path for #{path}"
         begin
           uri = URI(path)
         rescue URI::InvalidURIError
@@ -135,7 +136,7 @@ module Middleman
       end
 
       def get_image_sizes(name, options)
-        puts "getting images sizes for #{name}"
+        #puts "getting images sizes for #{name}"
 
         main_path = File.join(app.images_dir,name)
         main_abs_path = File.join(app.source_dir,main_path)
@@ -157,15 +158,15 @@ module Middleman
           sizes[width] = "../#{basename}#{extname}"
         end
 
-        puts "-"*30
-        puts [sizes, width, height]
+        #puts "-"*30
+        #puts [sizes, width, height]
         [sizes, width, height]
       end
 
 
       def generate_svg(name, is_relative, options)
-        puts "name for generate_svg = #{name}"
-        puts "options for generate_svg = #{options}"
+        #puts "name for generate_svg = #{name}"
+        #puts "options for generate_svg = #{options}"
         sizes, width, height = get_image_sizes(name, options)
         
         fallback_host = false
@@ -259,16 +260,16 @@ module Middleman
           options = Extension.options_hash
           sizes = options[:sizes]
           namespace = options[:namespace_directory].join(',')
-
-          files = Dir["#{images_dir_abs}/#{namespace}/*.{#{Extension.options_hash[:filetypes].join(',')}}"]
-
+          glob = "#{images_dir_abs}/{#{namespace}}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
+          files = Dir[glob]
           resource_list = files.map do |file|
             path = file.gsub(@app.source_dir + File::SEPARATOR, '')
             specs = ::Middleman::AutomaticClowncar::ThumbnailGenerator.specs(path, sizes)
             specs.map do |name, spec|
               resource = nil
-              #puts "#{path}: #{spec[:name]}: #{file}"
-              resource = Middleman::Sitemap::Resource.new(@app.sitemap, spec[:name], file) unless name == :original
+              dest_path = File.join(@app.root_path,@app.build_dir, spec[:name])
+              source = File.exists?(dest_path) ? dest_path : file
+              resource = Middleman::Sitemap::Resource.new(@app.sitemap, spec[:name], source) unless name == :original
             end
           end.flatten.reject {|resource| resource.nil? }
 
@@ -284,7 +285,7 @@ module Middleman
         # @param [Class] app
         # @param [Hash] options
         def initialize(app, options={})
-          puts "iniit for Raaaaaaaaaaaaaaaaaaaaaaaaaack"
+          #puts "iniit for Raaaaaaaaaaaaaaaaaaaaaaaaaack"
           @app = app
           @options = options
 
@@ -303,9 +304,9 @@ module Middleman
 
           path_on_disk = File.join(@options[:source_dir], path)
 
-          puts "calling!!!!!!"
-          puts "path_on_disk = #{path_on_disk}"
-          puts "original_map[path_on_disk] = #{@original_map[path_on_disk]}"
+          #puts "calling!!!!!!"
+          #puts "path_on_disk = #{path_on_disk}"
+          #puts "original_map[path_on_disk] = #{@original_map[path_on_disk]}"
           #TODO: caching
           if original_specs = @original_map[path_on_disk]
             original_file = original_specs[:original]
