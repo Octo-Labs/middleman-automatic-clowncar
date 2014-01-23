@@ -13,7 +13,7 @@ module Middleman
       option :sizes, {}, "The sizes of thumbnails to generate"
       option :namespace_directory, ["**"], "The directories inside of images that should be clowncared."
       option :filetypes, [:jpg, :jpeg, :png], "The types of files to use for automatic clowncaring."
-
+      option :include_originals, false, "Always include original images. (Or not.)"
       cattr_accessor :options_hash
 
       def initialize(app, options_hash={}, &block)
@@ -155,7 +155,7 @@ module Middleman
           sizes[swidth] = "#{basename}-#{sname}#{extname}"
         end
 
-        if options[:include_original]
+        if options[:include_original] || Extension.options_hash[:include_originals]
           sizes[width] = "../#{basename}#{extname}"
         end
 

@@ -143,4 +143,37 @@ Feature: Generating SVG clowncars during preview mode
     And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
     And the file "index.html" should not contain "test-image-huge.jpg"
 
+  Scenario: Including originals at the top level
+    Given a fixture app "automatic-clowncar-app"
+    And a file named "config.rb" with:
+    """
+    activate :automatic_clowncar,
+      :sizes => {
+        :small => 200,
+        :medium => 400,
+        :large => 600
+      },
+      :namespace_directory => %w(photos),
+      :include_originals => true
+    activate :asset_host, :host => "http://localhost:4567/"
+    """
+    And a file named "source/index.html.erb" with:
+    """
+    <%= automatic_clowncar_tag "photos/test-image.jpg" %>
+    """
+    Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
+    When I cd to "build"
+    #Then the following files should not exist:
+    #  | images/photos/test-image.jpg                       |
+    Then the following files should exist:
+      | images/photos/test-image.jpg                       |
+      | images/photos/test-image/test-image-small.jpg      |
+      | images/photos/test-image/test-image-medium.jpg     |
+      | images/photos/test-image/test-image-large.jpg      |
+    Then the file "index.html" should contain "<object"
+    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-small.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%20and%20(max-width:600px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-large.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:601px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/../test-image.jpg);%7D%7D"
+
 
