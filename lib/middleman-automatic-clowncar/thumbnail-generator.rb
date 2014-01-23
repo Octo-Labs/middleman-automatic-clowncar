@@ -5,7 +5,12 @@ module Middleman
   class ThumbnailGenerator
     class << self
 
-      def specs(origin, dimensions)
+      def specs(origin, dimensions, source_dir)
+        puts "origin = #{origin}"
+        puts "source_dir = #{source_dir}"
+        origin = origin.gsub(source_dir, '')
+        width, height = FastImage.size(File.join(source_dir,origin))
+
         dir = File.dirname(origin)
         filename = File.basename(origin,'.*')
         ext = File.extname(origin)
@@ -15,10 +20,13 @@ module Middleman
         ret = {original: {name: origin}}
 
         dimensions.each do |name, dimension|
+          puts "dimension = #{dimension}"
+          puts "width = #{width}"
+          next if dimension > width
           location = File.join(dir,"#{filename}-#{name}#{ext}")
           ret[name] = {name:location , dimensions: dimension}
         end
-
+        puts "ret = #{ret}"
         ret
       end
 
@@ -48,9 +56,9 @@ module Middleman
         end
       end
 
-      def original_map_for_files(files, specs)
+      def original_map_for_files(files, specs, source_dir)
         map = files.inject({}) do |memo, file|
-          generated_specs = self.specs(file, specs)
+          generated_specs = self.specs(file, specs, source_dir)
           generated_specs.each do |name, spec|
             memo[spec[:name]] = {:original => generated_specs[:original][:name], :spec => spec}
           end

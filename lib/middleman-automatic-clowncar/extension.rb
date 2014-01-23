@@ -44,7 +44,8 @@ module Middleman
             puts "Generating automatic clowncar images"
             files.each do |file|
               path = file.gsub(source_dir, '')
-              specs = ThumbnailGenerator.specs(path, sizes)
+              puts "3" * 200
+              specs = ThumbnailGenerator.specs(path, sizes, source_dir)
               ThumbnailGenerator.generate(source_dir, File.join(root, build_dir), path, specs)
             end
           end
@@ -151,6 +152,7 @@ module Middleman
         
         sizes = {}
         Extension.options_hash[:sizes].each_pair do |sname,swidth|
+          next if swidth > width
           sizes[swidth] = "#{basename}-#{sname}#{extname}"
         end
 
@@ -230,8 +232,10 @@ module Middleman
         end
 
         def thumbnail_specs(image, name)
+          puts "1" * 200
           sizes = Extension.options_hash[:sizes]
-          ThumbnailGenerator.specs(image, sizes)
+          puts "1" * 200
+          ThumbnailGenerator.specs(image, sizes, File.join(source_dir,images_dir))
         end
 
         def thumbnail_url(image, name, options = {})
@@ -264,7 +268,8 @@ module Middleman
           files = Dir[glob]
           resource_list = files.map do |file|
             path = file.gsub(@app.source_dir + File::SEPARATOR, '')
-            specs = ::Middleman::AutomaticClowncar::ThumbnailGenerator.specs(path, sizes)
+            puts "2" * 200
+            specs = ::Middleman::AutomaticClowncar::ThumbnailGenerator.specs(path, sizes,@app.source_dir)
             specs.map do |name, spec|
               resource = nil
               dest_path = File.join(@app.root_path,@app.build_dir, spec[:name])
@@ -291,7 +296,7 @@ module Middleman
 
           files = Dir["#{options[:images_source_dir]}/**/*.{#{options[:filetypes].join(',')}}"]
 
-          @original_map = ThumbnailGenerator.original_map_for_files(files, options[:sizes])
+          @original_map = ThumbnailGenerator.original_map_for_files(files, options[:sizes],options[:images_source_dir])
         end
 
         # Rack interface
