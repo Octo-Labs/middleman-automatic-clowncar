@@ -280,7 +280,7 @@ module Middleman
 
       # Rack middleware to convert images on the fly
       class Rack
-
+        require 'mini_magick'
         # Init
         # @param [Class] app
         # @param [Hash] options
@@ -312,14 +312,10 @@ module Middleman
             original_file = original_specs[:original]
             spec = original_specs[:spec]
             if spec.has_key? :dimensions
-              image = ::Magick::Image.read(original_file).first
+              image = ::MiniMagick::Image.open(original_file)
               blob = nil
-              image.change_geometry(spec[:dimensions]) do |cols, rows, img|
-                img = img.resize(cols, rows)
-                img = img.sharpen(0.5, 0.5)
-                blob = img.to_blob
-              end
-
+              image.resize spec[:dimensions]
+              blob = image.to_blob
               unless blob.nil?
                 status = 200
                 headers["Content-Length"] = ::Rack::Utils.bytesize(blob).to_s

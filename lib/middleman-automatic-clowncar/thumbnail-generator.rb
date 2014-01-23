@@ -1,4 +1,3 @@
-require 'RMagick'
 
 module Middleman
   module AutomaticClowncar
@@ -35,12 +34,14 @@ module Middleman
             origin_mtime = File.mtime(origin_path)
             if origin_mtime != File.mtime(dest_path)
               puts "Generating automatic clowncar for #{spec[:name]}"
-              image ||= ::Magick::Image.read(origin_path).first
-              image.change_geometry(spec[:dimensions]) do |cols, rows, img|
-                img = img.resize(cols, rows)
-                img = img.sharpen(0.5, 0.5)
-                img.write File.join(dest_path)
-              end
+              image ||= MiniMagick::Image.open(origin_path)
+              image.resize spec[:dimensions]
+              image.write dest_path
+              #image.change_geometry(spec[:dimensions]) do |cols, rows, img|
+              #  img = img.resize(cols, rows)
+              #  img = img.sharpen(0.5, 0.5)
+              #  img.write File.join(dest_path)
+              #end
               File.utime(origin_mtime, origin_mtime, dest_path)
             end
           end
