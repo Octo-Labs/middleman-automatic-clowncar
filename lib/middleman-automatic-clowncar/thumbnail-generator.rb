@@ -34,7 +34,7 @@ module Middleman
             origin_mtime = File.mtime(origin_path)
             if origin_mtime != File.mtime(dest_path)
               puts "Generating automatic clowncar for #{spec[:name]}"
-              image ||= MiniMagick::Image.open(origin_path)
+              image = MiniMagick::Image.open(origin_path)
               image.resize spec[:dimensions]
               image.write dest_path
               #image.change_geometry(spec[:dimensions]) do |cols, rows, img|
