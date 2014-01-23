@@ -6,9 +6,9 @@ module Middleman
     class << self
 
       def specs(origin, dimensions, source_dir)
-        puts "origin = #{origin}"
-        puts "source_dir = #{source_dir}"
-        origin = origin.gsub(source_dir, '')
+        #puts "origin = #{origin}"
+        #puts "source_dir = #{source_dir}"
+        origin = origin.gsub(source_dir + File::SEPARATOR, '')
         width, height = FastImage.size(File.join(source_dir,origin))
 
         dir = File.dirname(origin)
@@ -20,13 +20,10 @@ module Middleman
         ret = {original: {name: origin}}
 
         dimensions.each do |name, dimension|
-          puts "dimension = #{dimension}"
-          puts "width = #{width}"
           next if dimension > width
           location = File.join(dir,"#{filename}-#{name}#{ext}")
           ret[name] = {name:location , dimensions: dimension}
         end
-        puts "ret = #{ret}"
         ret
       end
 

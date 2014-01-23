@@ -44,7 +44,6 @@ module Middleman
             puts "Generating automatic clowncar images"
             files.each do |file|
               path = file.gsub(source_dir, '')
-              puts "3" * 200
               specs = ThumbnailGenerator.specs(path, sizes, source_dir)
               ThumbnailGenerator.generate(source_dir, File.join(root, build_dir), path, specs)
             end
@@ -232,9 +231,7 @@ module Middleman
         end
 
         def thumbnail_specs(image, name)
-          puts "1" * 200
           sizes = Extension.options_hash[:sizes]
-          puts "1" * 200
           ThumbnailGenerator.specs(image, sizes, File.join(source_dir,images_dir))
         end
 
@@ -268,7 +265,6 @@ module Middleman
           files = Dir[glob]
           resource_list = files.map do |file|
             path = file.gsub(@app.source_dir + File::SEPARATOR, '')
-            puts "2" * 200
             specs = ::Middleman::AutomaticClowncar::ThumbnailGenerator.specs(path, sizes,@app.source_dir)
             specs.map do |name, spec|
               resource = nil
@@ -295,8 +291,8 @@ module Middleman
           @options = options
 
           files = Dir["#{options[:images_source_dir]}/**/*.{#{options[:filetypes].join(',')}}"]
-
-          @original_map = ThumbnailGenerator.original_map_for_files(files, options[:sizes],options[:images_source_dir])
+          @original_map = ThumbnailGenerator.original_map_for_files(files, options[:sizes],options[:source_dir])
+          #puts @original_map
         end
 
         # Rack interface
@@ -308,16 +304,16 @@ module Middleman
           path = env["PATH_INFO"]
 
           path_on_disk = File.join(@options[:source_dir], path)
-
+          
           #puts "calling!!!!!!"
-          #puts "path_on_disk = #{path_on_disk}"
-          #puts "original_map[path_on_disk] = #{@original_map[path_on_disk]}"
+          #puts "path = #{path}"
+          #puts "original_map[path] = #{@original_map[path.sub('/','')]}"
           #TODO: caching
-          if original_specs = @original_map[path_on_disk]
+          if original_specs = @original_map[path.sub('/','')]
             original_file = original_specs[:original]
             spec = original_specs[:spec]
             if spec.has_key? :dimensions
-              image = ::MiniMagick::Image.open(original_file)
+              image = ::MiniMagick::Image.open(File.join(@options[:source_dir],original_file))
               blob = nil
               image.resize spec[:dimensions]
               blob = image.to_blob
