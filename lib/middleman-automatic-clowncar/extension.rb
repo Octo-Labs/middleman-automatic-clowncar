@@ -55,7 +55,7 @@ module Middleman
 
           sitemap.register_resource_list_manipulator(:thumbnailer, SitemapExtension.new(self), true)
 
-          app.use Rack, Extension.options_hash
+          #app.use Rack, Extension.options_hash
         end
       end
       

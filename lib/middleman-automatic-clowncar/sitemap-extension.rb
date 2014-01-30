@@ -23,7 +23,7 @@ module Middleman
             next if name == :original
             dest_path = File.join(@app.root_path,@app.build_dir, spec[:name])
             source = File.exists?(dest_path) ? dest_path : file
-            resource_list << Middleman::AutomaticClowncar::ThumbnailResource.new(@app.sitemap,spec[:name],file,@app.root_path,@app.build_dir,@app.source_dir)
+            resource_list << Middleman::AutomaticClowncar::ThumbnailResource.new(@app.sitemap,spec[:name],spec[:dimensions],file,@app.root_path,@app.build_dir,@app.source_dir)
             #resource_list << Middleman::Sitemap::Resource.new(@app.sitemap, spec[:name], source) unless name == :original
           end
           fname = specs.first[1][:name]
