@@ -31,7 +31,7 @@ module Middleman
           fname = specs.first[1][:name]
           timestampDir = File.join(File.dirname(fname),File.basename(fname,'.*'))
           timestampPath = File.join(timestampDir,'timestamp.txt')
-          resource_list << Middleman::AutomaticClowncar::TimestampResource.new(@app.sitemap, timestampPath, "testing!!")
+          resource_list << Middleman::AutomaticClowncar::TimestampResource.new(@app.sitemap, timestampPath, path, @app.source_dir)
         end
         resource_list.flatten.reject {|resource| resource.nil? }
 

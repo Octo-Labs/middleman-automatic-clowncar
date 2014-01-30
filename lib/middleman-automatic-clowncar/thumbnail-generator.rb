@@ -8,7 +8,7 @@ module Middleman
       def specs(origin, dimensions, source_dir)
         #puts "origin = #{origin}"
         #puts "source_dir = #{source_dir}"
-        origin = origin.gsub(source_dir + File::SEPARATOR, '')
+        origin = Utils.naked_origin(source_dir,origin) # just in case
         width, height = FastImage.size(File.join(source_dir,origin))
 
         dir = File.dirname(origin)
@@ -35,14 +35,14 @@ module Middleman
         puts "timestampPath = #{timestampPath}"
 
         image = nil
-        origin_path = File.join(source_dir,origin)
-        origin_mtime = File.mtime(origin_path)
+        #origin_mtime = Utils.origin_mtime(source_dir,origin)
 
+        #stored_timestamp = Utils.stored_timestamp(output_dir,origin)
         #puts "origin_mtime = #{origin_mtime.to_s.strip}"
         #puts "timestamp = #{File.open(timestampPath).open.read}"
-        #if File.exist?(timestampPath) && File.open(timestampPath).open.read.squish == origin_mtime.to_s.squish
-        #  return
-        #end
+        if Utils.timestamp_current?(source_dir,output_dir,origin)
+          return
+        end
 
         specs.each do |name, spec|
           if spec.has_key? :dimensions then
@@ -51,9 +51,9 @@ module Middleman
             FileUtils.mkdir_p dest_dir # if it exists, nothing happens
             
 
-            if origin_mtime != File.mtime(dest_path)
+            #if origin_mtime != File.mtime(dest_path)
               puts "Generating automatic clowncar for #{spec[:name]}"
-              image = MiniMagick::Image.open(origin_path)
+              image = MiniMagick::Image.open(Utils.full_source_path(source_dir,origin))
               image.resize spec[:dimensions]
               image.write dest_path
               #image.change_geometry(spec[:dimensions]) do |cols, rows, img|
@@ -61,8 +61,8 @@ module Middleman
               #  img = img.sharpen(0.5, 0.5)
               #  img.write File.join(dest_path)
               #end
-              File.utime(origin_mtime, origin_mtime, dest_path)
-            end
+              #File.utime(origin_mtime, origin_mtime, dest_path)
+            #end
           end
         end
         

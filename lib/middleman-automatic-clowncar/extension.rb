@@ -3,6 +3,7 @@ require 'middleman-core'
 require 'middleman-automatic-clowncar/thumbnail-generator'
 require 'middleman-automatic-clowncar/timestamp-resource'
 require 'middleman-automatic-clowncar/sitemap-extension'
+require 'middleman-automatic-clowncar/utils'
 
 require 'fastimage'
 

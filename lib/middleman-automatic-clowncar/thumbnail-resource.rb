@@ -1,6 +1,6 @@
 module Middleman
   module AutomaticClowncar
-    class TimestampResource < ::Middleman::Sitemap::Resource
+    class ThumbnailResource < ::Middleman::Sitemap::Resource
       
       attr_accessor :output
 
@@ -38,7 +38,7 @@ module Middleman
         @local_metadata.dup
       end
 
-
     end
   end
 end
+
