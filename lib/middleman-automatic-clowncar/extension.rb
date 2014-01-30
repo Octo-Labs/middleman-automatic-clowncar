@@ -2,6 +2,7 @@ require 'middleman-core'
 
 require 'middleman-automatic-clowncar/thumbnail-generator'
 require 'middleman-automatic-clowncar/timestamp-resource'
+require 'middleman-automatic-clowncar/thumbnail-resource'
 require 'middleman-automatic-clowncar/sitemap-extension'
 require 'middleman-automatic-clowncar/utils'
 
@@ -43,14 +44,14 @@ module Middleman
           files = Dir[glob]
 
           # don't build the files until after build
-          after_build do |builder|
-            puts "Generating automatic clowncar images"
-            files.each do |file|
-              path = file.gsub(source_dir, '')
-              specs = ThumbnailGenerator.specs(path, sizes, source_dir)
-              ThumbnailGenerator.generate(source_dir, File.join(root, build_dir), path, specs)
-            end
-          end
+          #after_build do |builder|
+            #puts "Generating automatic clowncar images"
+            #files.each do |file|
+              #path = file.gsub(source_dir, '')
+              #specs = ThumbnailGenerator.specs(path, sizes, source_dir)
+              #ThumbnailGenerator.generate(source_dir, File.join(root, build_dir), path, specs)
+            #end
+          #end
 
           sitemap.register_resource_list_manipulator(:thumbnailer, SitemapExtension.new(self), true)
 

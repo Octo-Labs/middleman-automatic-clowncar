@@ -10,9 +10,6 @@ module Middleman
       def manipulate_resource_list(resources)
 
         images_dir_abs = File.join(@app.source_dir, @app.images_dir)
-
-        images_dir = @app.images_dir
-
         options = Extension.options_hash
         sizes = options[:sizes]
         namespace = options[:namespace_directory].join(',')
@@ -20,13 +17,14 @@ module Middleman
         files = Dir[glob]
         resource_list = []
         files.each do |file|
-          path = file.gsub(@app.source_dir + File::SEPARATOR, '')
+          path = Utils.naked_origin(@app.source_dir,file)
           specs = ::Middleman::AutomaticClowncar::ThumbnailGenerator.specs(path, sizes,@app.source_dir)
-          specs.map do |name, spec|
-            resource = nil
+          specs.each_pair do |name, spec|
+            next if name == :original
             dest_path = File.join(@app.root_path,@app.build_dir, spec[:name])
             source = File.exists?(dest_path) ? dest_path : file
-            resource_list << Middleman::Sitemap::Resource.new(@app.sitemap, spec[:name], source) unless name == :original
+            resource_list << Middleman::AutomaticClowncar::ThumbnailResource.new(@app.sitemap,spec[:name],file,@app.root_path,@app.build_dir,@app.source_dir)
+            #resource_list << Middleman::Sitemap::Resource.new(@app.sitemap, spec[:name], source) unless name == :original
           end
           fname = specs.first[1][:name]
           timestampDir = File.join(File.dirname(fname),File.basename(fname,'.*'))

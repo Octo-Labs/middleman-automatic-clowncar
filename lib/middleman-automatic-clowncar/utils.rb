@@ -4,7 +4,7 @@ module Middleman
 
 
       def self.origin_mtime(source_dir,origin)
-        origin_path = File.join(source_dir,origin)
+        origin_path = File.join(source_dir,naked_origin(source_dir,origin))
         origin_mtime = File.mtime(origin_path).to_s.strip
       end
 
