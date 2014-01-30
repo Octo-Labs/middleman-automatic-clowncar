@@ -11,7 +11,11 @@ module Middleman
       end
 
       def template?
-        true
+        false
+      end
+
+      def source_file
+        @origin
       end
 
       def render(*args, &block)

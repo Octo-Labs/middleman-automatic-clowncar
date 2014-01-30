@@ -253,7 +253,7 @@ module Middleman
 
       
 
-
+      if false
       # Rack middleware to convert images on the fly
       class Rack
         require 'mini_magick'
@@ -303,6 +303,7 @@ module Middleman
 
           [status, headers, response]
         end
+      end
       end
 
 
