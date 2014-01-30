@@ -1,6 +1,8 @@
 require 'middleman-core'
 
 require 'middleman-automatic-clowncar/thumbnail-generator'
+require 'middleman-automatic-clowncar/timestamp-resource'
+require 'middleman-automatic-clowncar/sitemap-extension'
 
 require 'fastimage'
 
@@ -211,22 +213,23 @@ module Middleman
             internal = %{<!--[if lte IE 8]><img src="#{fallback_path}"><![endif]-->}
           end
 
+          width, height = extensions[:automatic_clowncar].get_physical_image_size(name)
           object_style = ""
           if options.has_key?(:prevent_upscaling) && options[:prevent_upscaling]
-            if options.has_key?(:include_original) && options[:include_original]
-              width, height = extensions[:automatic_clowncar].get_physical_image_size(name)
-            else
-              width = extensions[:automatic_clowncar].options.sizes.map{|k,v| v }.sort.last
-            end
+            #if options.has_key?(:include_original) && options[:include_original]
+            #else
+            #  width = extensions[:automatic_clowncar].options.sizes.map{|k,v| v }.sort.last
+            #end
+            
             object_style = "max-width:#{width}px;"
           end
 
           if options.has_key?(:inline) && (options[:inline] === false)
             url = asset_path(:images, "#{name}.svg")
-            %Q{<object type="image/svg+xml" style="#{object_style}" data="#{url}">#{internal}</object>}
+            %Q{<object type="image/svg+xml" style="#{object_style}" data-aspect-ratio="#{width.to_f/height.to_f}" data="#{url}">#{internal}</object>}
           else
             data = extensions[:automatic_clowncar].generate_svg(name, true, options)
-            %Q{<object type="image/svg+xml" style="#{object_style}" data="data:image/svg+xml,#{::URI.escape(data)}">#{internal}</object>}
+            %Q{<object type="image/svg+xml" style="#{object_style}" data-aspect-ratio="#{width.to_f/height.to_f}" data="data:image/svg+xml,#{::URI.escape(data)}">#{internal}</object>}
           end
         end
 
@@ -246,37 +249,7 @@ module Middleman
 
       end # helpers
 
-      class SitemapExtension
-        def initialize(app)
-          @app = app
-        end
-
-        # Add sitemap resource for every image in the sprockets load path
-        def manipulate_resource_list(resources)
-
-          images_dir_abs = File.join(@app.source_dir, @app.images_dir)
-
-          images_dir = @app.images_dir
-
-          options = Extension.options_hash
-          sizes = options[:sizes]
-          namespace = options[:namespace_directory].join(',')
-          glob = "#{images_dir_abs}/{#{namespace}}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
-          files = Dir[glob]
-          resource_list = files.map do |file|
-            path = file.gsub(@app.source_dir + File::SEPARATOR, '')
-            specs = ::Middleman::AutomaticClowncar::ThumbnailGenerator.specs(path, sizes,@app.source_dir)
-            specs.map do |name, spec|
-              resource = nil
-              dest_path = File.join(@app.root_path,@app.build_dir, spec[:name])
-              source = File.exists?(dest_path) ? dest_path : file
-              resource = Middleman::Sitemap::Resource.new(@app.sitemap, spec[:name], source) unless name == :original
-            end
-          end.flatten.reject {|resource| resource.nil? }
-
-          resources + resource_list
-        end
-      end # SitemapExtension
+      
 
 
       # Rack middleware to convert images on the fly
