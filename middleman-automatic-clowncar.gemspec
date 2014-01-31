@@ -18,9 +18,14 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "middleman-core", "~> 3.2"
+  spec.add_dependency "middleman-core", "~> 3.2.2"
+  
   spec.add_dependency("mini_magick", ["~> 3.7.0"])
   spec.add_dependency "fastimage", "~> 1.5.5"
+
+  # These are here to make sure that we don't have any collisions with sprockets
+  spec.add_dependency "middleman-sprockets", "~> 3.2.0"
+  spec.add_dependency "sass", "~> 3.2.14"
 
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake"

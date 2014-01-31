@@ -15,7 +15,7 @@ module Middleman
       SVG_TEMPLATE = "<svg viewBox='0 0 ::width:: ::height::' preserveAspectRatio='xMidYMid meet' xmlns='http://www.w3.org/2000/svg'><style>svg{background-size:100% 100%;background-repeat:no-repeat;}::media_queries::</style></svg>"
       
       option :sizes, {}, "The sizes of thumbnails to generate"
-      option :namespace_directory, ["**"], "The directories inside of images that should be clowncared."
+      option :namespace_directory, ["**"], "The directories that should be clowncared. (Outside of the sprockets images dir.)"
       option :filetypes, [:jpg, :jpeg, :png], "The types of files to use for automatic clowncaring."
       option :include_originals, false, "Always include original images. (Or not.)"
       cattr_accessor :options_hash
@@ -33,13 +33,12 @@ module Middleman
         app.after_configuration do
 
           #stash the source images dir in options for the Rack middleware
-          Extension.options_hash[:images_source_dir] = File.join(source_dir, images_dir)
           Extension.options_hash[:source_dir] = source_dir
 
           sizes = Extension.options_hash[:sizes]
           namespace = Extension.options_hash[:namespace_directory].join(',')
 
-          dir = Pathname.new(File.join(source_dir, images_dir))
+          dir = Pathname.new(source_dir)
           glob = "#{dir}/{#{namespace}}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
           files = Dir[glob]
 
@@ -91,7 +90,8 @@ module Middleman
 
           if is_relative
             url = app.asset_path(:images, svg_path)
-
+            url = url.sub("/#{app.images_dir}/",'/')
+            
             if fallback_host &&is_relative_url?(url)
               File.join(fallback_host, url)
             else
@@ -134,16 +134,14 @@ module Middleman
       end
 
       def get_physical_image_size(name)
-        main_path = File.join(app.images_dir,name)
-        main_abs_path = File.join(app.source_dir,main_path)
+        main_abs_path = File.join(app.source_dir,name)
         FastImage.size(main_abs_path, :raise_on_failure => true)
       end
 
       def get_image_sizes(name, options)
         #puts "getting images sizes for #{name}"
 
-        main_path = File.join(app.images_dir,name)
-        main_abs_path = File.join(app.source_dir,main_path)
+        main_abs_path = File.join(app.source_dir,name)
 
         extname = File.extname(name)
         basename = File.basename(name, ".*")
@@ -237,74 +235,20 @@ module Middleman
 
         def thumbnail_specs(image, name)
           sizes = Extension.options_hash[:sizes]
-          ThumbnailGenerator.specs(image, sizes, File.join(source_dir,images_dir))
+          ThumbnailGenerator.specs(image, sizes, source_dir)
         end
 
         def thumbnail_url(image, name, options = {})
           include_images_dir = options.delete :include_images_dir
 
           url = thumbnail_specs(image, name)[name][:name]
-          url = File.join(images_dir, url) if include_images_dir
+          url = File.join(url) if include_images_dir
 
           url
         end
 
       end # helpers
 
-      
-
-      if false
-      # Rack middleware to convert images on the fly
-      class Rack
-        require 'mini_magick'
-        # Init
-        # @param [Class] app
-        # @param [Hash] options
-        def initialize(app, options={})
-          #puts "iniit for Raaaaaaaaaaaaaaaaaaaaaaaaaack"
-          @app = app
-          @options = options
-
-          files = Dir["#{options[:images_source_dir]}/**/*.{#{options[:filetypes].join(',')}}"]
-          @original_map = ThumbnailGenerator.original_map_for_files(files, options[:sizes],options[:source_dir])
-          #puts @original_map
-        end
-
-        # Rack interface
-        # @param [Rack::Environmemt] env
-        # @return [Array]
-        def call(env)
-          status, headers, response = @app.call(env)
-
-          path = env["PATH_INFO"]
-
-          path_on_disk = File.join(@options[:source_dir], path)
-          
-          #puts "calling!!!!!!"
-          #puts "path = #{path}"
-          #puts "original_map[path] = #{@original_map[path.sub('/','')]}"
-          #TODO: caching
-          if original_specs = @original_map[path.sub('/','')]
-            original_file = original_specs[:original]
-            spec = original_specs[:spec]
-            if spec.has_key? :dimensions
-              image = ::MiniMagick::Image.open(File.join(@options[:source_dir],original_file))
-              blob = nil
-              image.resize spec[:dimensions]
-              blob = image.to_blob
-              unless blob.nil?
-                status = 200
-                headers["Content-Length"] = ::Rack::Utils.bytesize(blob).to_s
-                headers["Content-Type"] = image.mime_type
-                response = [blob]
-              end
-            end
-          end
-
-          [status, headers, response]
-        end
-      end
-      end
 
 
 

@@ -14,10 +14,6 @@ module Middleman
         false
       end
 
-      def source_file
-        @origin
-      end
-
       def render(*args, &block)
         Utils.origin_mtime(@source_dir,@origin)
       end

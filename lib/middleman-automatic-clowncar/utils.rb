@@ -33,10 +33,6 @@ module Middleman
         origin.gsub(source_dir + File::SEPARATOR, '')
       end
 
-      def self.full_source_path(source_dir,origin)
-        File.join( source_dir, naked_origin(source_dir,origin) )
-      end
-
     end
   end
 end

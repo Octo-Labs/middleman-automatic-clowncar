@@ -9,11 +9,10 @@ module Middleman
       # Add sitemap resource for every image in the sprockets load path
       def manipulate_resource_list(resources)
 
-        images_dir_abs = File.join(@app.source_dir, @app.images_dir)
         options = Extension.options_hash
         sizes = options[:sizes]
         namespace = options[:namespace_directory].join(',')
-        glob = "#{images_dir_abs}/{#{namespace}}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
+        glob = "#{@app.source_dir}/{#{namespace}}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
         files = Dir[glob]
         resource_list = []
         files.each do |file|

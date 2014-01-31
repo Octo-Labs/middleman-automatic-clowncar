@@ -12,7 +12,6 @@ module Middleman
         @root_path = root_path
         @build_dir = build_dir
         @source_dir = source_dir
-        puts "init!!!"
         super(store, path)
       end
 
@@ -20,31 +19,25 @@ module Middleman
         false
       end
 
-      def source_file
-        puts "calling source file!!!!!"
-        output_dir = File.join(@root_path,@build_dir)
-        dest_path = File.join(output_dir,@path)
-        source_path = File.join(@root_path,@source_dir)
-        if Utils.timestamp_current?(@source_dir,@build_dir,@origin) && File.exist?(dest_path)
-          puts "using file from build dir!"
-          File.join(@build_dir,@path)
-        else
-          puts "using @origin"
-          @origin
-        end
-      end
+      #def source_file
+        #output_dir = File.join(@root_path,@build_dir)
+        #dest_path = File.join(output_dir,@path)
+        #source_path = File.join(@root_path,@source_dir)
+        #if Utils.timestamp_current?(@source_dir,@build_dir,@origin) && File.exist?(dest_path)
+          #File.join(@build_dir,@path)
+        #else
+          #@origin
+        #end
+      #end
 
       def render(*args, &block)
-        puts "calling render!!!"
         output_dir = File.join(@root_path,@build_dir)
         dest_path = File.join(output_dir,@path)
         source_path = File.join(@source_dir,@origin)
         img = nil
         if Utils.timestamp_current?(@source_dir,@build_dir,@origin) && File.exist?(dest_path)
-          puts "using existing file!!!!"
           img = MiniMagick::Image.open(dest_path)
         else
-          puts "building a file!"
           img = MiniMagick::Image.open(@origin)
           img.resize(@dimensions)
         end
@@ -56,7 +49,6 @@ module Middleman
       # end
 
       def binary?
-        puts "calling binary? #{false}"
         false
       end
 

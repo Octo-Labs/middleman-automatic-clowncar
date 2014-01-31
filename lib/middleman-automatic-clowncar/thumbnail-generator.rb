@@ -26,61 +26,8 @@ module Middleman
         end
         ret
       end
-
-      def generate(source_dir, output_dir, origin, specs)
-
-        fname = specs.first[1][:name]
-        timestampDir = File.join(File.dirname(fname),File.basename(fname,'.*'))
-        timestampPath = File.join(output_dir,timestampDir,'timestamp.txt')
-        puts "timestampPath = #{timestampPath}"
-
-        image = nil
-        #origin_mtime = Utils.origin_mtime(source_dir,origin)
-
-        #stored_timestamp = Utils.stored_timestamp(output_dir,origin)
-        #puts "origin_mtime = #{origin_mtime.to_s.strip}"
-        #puts "timestamp = #{File.open(timestampPath).open.read}"
-        if Utils.timestamp_current?(source_dir,output_dir,origin)
-          return
-        end
-
-        specs.each do |name, spec|
-          if spec.has_key? :dimensions then
-            dest_path = File.join(output_dir,spec[:name])
-            dest_dir = File.dirname(dest_path)
-            FileUtils.mkdir_p dest_dir # if it exists, nothing happens
-            
-
-            #if origin_mtime != File.mtime(dest_path)
-              puts "Generating automatic clowncar for #{spec[:name]}"
-              image = MiniMagick::Image.open(Utils.full_source_path(source_dir,origin))
-              image.resize spec[:dimensions]
-              image.write dest_path
-              #image.change_geometry(spec[:dimensions]) do |cols, rows, img|
-              #  img = img.resize(cols, rows)
-              #  img = img.sharpen(0.5, 0.5)
-              #  img.write File.join(dest_path)
-              #end
-              #File.utime(origin_mtime, origin_mtime, dest_path)
-            #end
-          end
-        end
-        
-        #File.open(timestampPath, 'w') {|f| f.write(origin_mtime) }
-        
-      end
-
-      def original_map_for_files(files, specs, source_dir)
-        map = files.inject({}) do |memo, file|
-          generated_specs = self.specs(file, specs, source_dir)
-          generated_specs.each do |name, spec|
-            memo[spec[:name]] = {:original => generated_specs[:original][:name], :spec => spec}
-          end
-          memo
-        end
-        # puts map
-        map
-      end
+    
+    
     end
   end
   end

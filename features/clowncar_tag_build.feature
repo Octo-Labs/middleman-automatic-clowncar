@@ -9,16 +9,16 @@ Feature: Generating SVG clowncars during preview mode
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
     When I cd to "build"
     #Then the following files should not exist:
-    #  | images/photos/test-image.jpg                       |
+    #  | photos/test-image.jpg                       |
     Then the following files should exist:
-      | images/photos/test-image.jpg                       |
-      | images/photos/test-image/test-image-small.jpg      |
-      | images/photos/test-image/test-image-medium.jpg     |
-      | images/photos/test-image/test-image-large.jpg      |
+      | photos/test-image.jpg                       |
+      | photos/test-image/test-image-small.jpg      |
+      | photos/test-image/test-image-medium.jpg     |
+      | photos/test-image/test-image-large.jpg      |
     Then the file "index.html" should contain "<object"
-    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-small.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-large.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-small.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-medium.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-large.jpg);%7D%7D"
 
   Scenario: Basic command with asset_host
     Given a fixture app "automatic-clowncar-app"
@@ -40,15 +40,15 @@ Feature: Generating SVG clowncars during preview mode
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
     When I cd to "build"
     #Then the following files should not exist:
-    #  | images/photos/test-image.jpg
+    #  | photos/test-image.jpg
     Then the following files should exist:
-      | images/photos/test-image/test-image-small.jpg      |
-      | images/photos/test-image/test-image-medium.jpg      |
-      | images/photos/test-image/test-image-large.jpg      |
+      | photos/test-image/test-image-small.jpg      |
+      | photos/test-image/test-image-medium.jpg      |
+      | photos/test-image/test-image-large.jpg      |
     Then the file "index.html" should contain "<object"
-    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-small.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-large.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-small.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-medium.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-large.jpg);%7D%7D"
 
   Scenario: With OldIE Fallback
     Given a fixture app "automatic-clowncar-app"
@@ -59,17 +59,17 @@ Feature: Generating SVG clowncars during preview mode
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
     When I cd to "build"
     #Then the following files should not exist:
-    #  | images/photos/test-image.jpg
+    #  | photos/test-image.jpg
     Then the following files should exist:
-      | images/photos/test-image/test-image-small.jpg      |
-      | images/photos/test-image/test-image-medium.jpg      |
-      | images/photos/test-image/test-image-large.jpg                                |
+      | photos/test-image/test-image-small.jpg      |
+      | photos/test-image/test-image-medium.jpg      |
+      | photos/test-image/test-image-large.jpg                                |
     Then the file "index.html" should contain "<object"
-    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-small.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-large.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-small.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-medium.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-large.jpg);%7D%7D"
     And the file "index.html" should contain "<!--[if lte IE 8]>"
-    And the file "index.html" should contain '<img src="/images/photos/test-image/test-image-small.jpg">'
+    And the file "index.html" should contain '<img src="/photos/test-image/test-image-small.jpg">'
     And the file "index.html" should contain "<![endif]-->"
 
 
@@ -82,15 +82,15 @@ Feature: Generating SVG clowncars during preview mode
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
     When I cd to "build"
     #Then the following files should not exist:
-    #  | images/photos/test-image.jpg
+    #  | photos/test-image.jpg
     Then the following files should exist:
-      | images/photos/test-image/test-image-small.jpg      |
-      | images/photos/test-image/test-image-medium.jpg      |
-      | images/photos/test-image/test-image-large.jpg                                |
+      | photos/test-image/test-image-small.jpg      |
+      | photos/test-image/test-image-medium.jpg      |
+      | photos/test-image/test-image-large.jpg                                |
     Then the file "index.html" should contain "<object"
-    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-small.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-large.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-small.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-medium.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-large.jpg);%7D%7D"
     And the file "index.html" should contain "max-width:1576px"
 
   Scenario: Including originals
@@ -102,17 +102,17 @@ Feature: Generating SVG clowncars during preview mode
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
     When I cd to "build"
     #Then the following files should not exist:
-    #  | images/photos/test-image.jpg                       |
+    #  | photos/test-image.jpg                       |
     Then the following files should exist:
-      | images/photos/test-image.jpg                       |
-      | images/photos/test-image/test-image-small.jpg      |
-      | images/photos/test-image/test-image-medium.jpg     |
-      | images/photos/test-image/test-image-large.jpg      |
+      | photos/test-image.jpg                       |
+      | photos/test-image/test-image-small.jpg      |
+      | photos/test-image/test-image-medium.jpg     |
+      | photos/test-image/test-image-large.jpg      |
     Then the file "index.html" should contain "<object"
-    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-small.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%20and%20(max-width:600px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-large.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:601px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/../test-image.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-small.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-medium.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%20and%20(max-width:600px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-large.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:601px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/../test-image.jpg);%7D%7D"
 
   Scenario: Don't generate upscaled images
     Given a fixture app "automatic-clowncar-app"
@@ -134,13 +134,13 @@ Feature: Generating SVG clowncars during preview mode
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
     When I cd to "build"
     Then the following files should not exist:
-      | images/photos/test-image/test-image-huge.jpg  |
+      | photos/test-image/test-image-huge.jpg  |
     Then the following files should exist:
-      | images/photos/test-image/test-image-small.jpg      |
-      | images/photos/test-image/test-image-medium.jpg      |
+      | photos/test-image/test-image-small.jpg      |
+      | photos/test-image/test-image-medium.jpg      |
     Then the file "index.html" should contain "<object"
-    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-small.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-small.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-medium.jpg);%7D%7D"
     And the file "index.html" should not contain "test-image-huge.jpg"
 
   Scenario: Including originals at the top level
@@ -164,16 +164,16 @@ Feature: Generating SVG clowncars during preview mode
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
     When I cd to "build"
     #Then the following files should not exist:
-    #  | images/photos/test-image.jpg                       |
+    #  | photos/test-image.jpg                       |
     Then the following files should exist:
-      | images/photos/test-image.jpg                       |
-      | images/photos/test-image/test-image-small.jpg      |
-      | images/photos/test-image/test-image-medium.jpg     |
-      | images/photos/test-image/test-image-large.jpg      |
+      | photos/test-image.jpg                       |
+      | photos/test-image/test-image-small.jpg      |
+      | photos/test-image/test-image-medium.jpg     |
+      | photos/test-image/test-image-large.jpg      |
     Then the file "index.html" should contain "<object"
-    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-small.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-medium.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%20and%20(max-width:600px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/test-image-large.jpg);%7D%7D"
-    And the file "index.html" should contain "@media%20screen%20and%20(min-width:601px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/images/photos/test-image/../test-image.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-small.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-medium.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%20and%20(max-width:600px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-large.jpg);%7D%7D"
+    And the file "index.html" should contain "@media%20screen%20and%20(min-width:601px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/../test-image.jpg);%7D%7D"
 
 
