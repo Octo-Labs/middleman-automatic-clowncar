@@ -8,7 +8,7 @@ module Middleman
 
       # Add sitemap resource for every image in the sprockets load path
       def manipulate_resource_list(resources)
-
+        puts "resources = #{resources.class}"
         options = Extension.options_hash
         sizes = options[:sizes]
         namespace = options[:namespace_directory].join(',')
@@ -19,7 +19,11 @@ module Middleman
           path = Utils.naked_origin(@app.source_dir,file)
           specs = ::Middleman::AutomaticClowncar::ThumbnailGenerator.specs(path, sizes,@app.source_dir)
           specs.each_pair do |name, spec|
-            next if name == :original
+            # Remove the default resource and use a ThumbnailResource that will avoid repeat imgoptim
+            if name == :original
+              default_resource = resources.select{|r| r.destination_path == spec[:name]}
+              resources = resources - default_resource
+            end
             dest_path = File.join(@app.root_path,@app.build_dir, spec[:name])
             source = File.exists?(dest_path) ? dest_path : file
             resource_list << Middleman::AutomaticClowncar::ThumbnailResource.new(@app.sitemap,spec[:name],spec[:dimensions],file,@app.root_path,@app.build_dir,@app.source_dir)

@@ -39,7 +39,7 @@ module Middleman
           img = MiniMagick::Image.open(dest_path)
         else
           img = MiniMagick::Image.open(@origin)
-          img.resize(@dimensions)
+          img.resize(@dimensions) unless @dimensions.blank?
         end
         img.to_blob
       end
