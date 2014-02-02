@@ -30,13 +30,30 @@ activate :automatic_clowncar,
   :namespace_directory => %w(photos)
 ```
 
+At build time the extension will look in `source/photos` and will create
+thumbnails for each image it finds there.
+
+For example, let's say you have an image at
+`source/photos/my-photo.jpg`. With the configuration above the extension
+will generate the following files:
+
+```
+build/photos/my-photos.svg
+build/photos/my-photo/my-photo-small.jpg
+build/photos/my-photo/my-photo-medium.jpg
+build/photos/my-photo/my-photo-large.jpg
+build/photos/my-photo/timestamp.txt
+```
+
+The timestamp file is used to allow the extension to skip regenerating
+the thumbnails if the modified timestamp of the source image has not changed.
+
 Then in a template you can use the `automatic_clowncar_tag` to display a
 responsive image.
 
 ```erb
 <%= automatic_clowncar_tag 'photos/my-photo.jpg' %>
 ```
-
 
 ## Contributing
 
