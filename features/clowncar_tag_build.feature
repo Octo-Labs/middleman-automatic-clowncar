@@ -11,6 +11,7 @@ Feature: Generating SVG clowncars during preview mode
     #Then the following files should not exist:
     #  | photos/test-image.jpg                       |
     Then the following files should exist:
+      | index.html                                  |
       | photos/test-image.jpg                       |
       | photos/test-image/test-image-small.jpg      |
       | photos/test-image/test-image-medium.jpg     |
