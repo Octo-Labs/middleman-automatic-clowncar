@@ -11,7 +11,7 @@ require "middleman-core/step_definitions"
 require "middleman-sprockets"
 require File.join(PROJECT_ROOT_PATH, 'lib', 'middleman-automatic-clowncar')
 
-require 'coveralls'
-Coveralls.wear!
+#require 'coveralls'
+#Coveralls.wear!
 
 
