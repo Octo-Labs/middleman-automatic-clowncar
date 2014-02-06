@@ -8,6 +8,7 @@ Feature: Generating SVG clowncars during preview mode
     """
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
     When I cd to "build"
+    Given some time has passed
     #Then the following files should not exist:
     #  | photos/test-image.jpg                       |
     Then the following files should exist:
