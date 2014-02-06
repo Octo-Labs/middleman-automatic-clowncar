@@ -6,6 +6,7 @@ Automatically generated responsive images for Middleman.
 [![Build Status](https://travis-ci.org/Octo-Labs/middleman-automatic-clowncar.png?branch=master)](https://travis-ci.org/Octo-Labs/middleman-automatic-clowncar)
 [![Code Climate](https://codeclimate.com/github/Octo-Labs/middleman-automatic-clowncar.png)](https://codeclimate.com/github/Octo-Labs/middleman-automatic-clowncar)
 [![Coverage Status](https://coveralls.io/repos/Octo-Labs/middleman-automatic-clowncar/badge.png?branch=master)](https://coveralls.io/r/Octo-Labs/middleman-automatic-clowncar?branch=master)
+[![Dependency Status](https://gemnasium.com/Octo-Labs/middleman-automatic-clowncar.png)](https://gemnasium.com/Octo-Labs/middleman-automatic-clowncar)
 
 
 ## Installation
