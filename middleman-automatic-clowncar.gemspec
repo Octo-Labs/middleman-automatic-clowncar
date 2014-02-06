@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "cucumber", "~> 1.3.10"
   spec.add_development_dependency "aruba",    "~> 0.5.1"
-  spec.add_development_dependency "simplecov", "~> 0.8.2"
+  #spec.add_development_dependency "simplecov", "~> 0.8.2"
 end
