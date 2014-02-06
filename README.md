@@ -9,6 +9,7 @@ Automatically generated responsive images for Middleman.
 [![Dependency Status](https://gemnasium.com/Octo-Labs/middleman-automatic-clowncar.png)](https://gemnasium.com/Octo-Labs/middleman-automatic-clowncar)
 
 
+
 ## Installation
 
 Add this line to your application's Gemfile:
