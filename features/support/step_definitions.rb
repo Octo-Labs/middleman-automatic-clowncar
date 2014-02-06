@@ -3,5 +3,5 @@ Given(/^the file "(.*?)" has been overwritten with "(.*?)"$/) do |file1,file2|
 end
 
 Given(/^some time has passed$/) do
-  sleep 5
+  sleep 30
 end
