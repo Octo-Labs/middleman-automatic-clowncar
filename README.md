@@ -2,6 +2,12 @@
 
 Automatically generated responsive images for Middleman.
 
+[![Gem Version](https://badge.fury.io/rb/middleman-automatic-clowncar.png)](http://badge.fury.io/rb/middleman-automatic-clowncar)
+[![Build Status](https://travis-ci.org/Octo-Labs/middleman-automatic-clowncar.png?branch=master)](https://travis-ci.org/Octo-Labs/middleman-automatic-clowncar)
+[![Code Climate](https://codeclimate.com/github/Octo-Labs/middleman-automatic-clowncar.png)](https://codeclimate.com/github/Octo-Labs/middleman-automatic-clowncar)
+[![Coverage Status](https://coveralls.io/repos/Octo-Labs/middleman-automatic-clowncar/badge.png?branch=master)](https://coveralls.io/r/Octo-Labs/middleman-automatic-clowncar?branch=master)
+
+
 ## Installation
 
 Add this line to your application's Gemfile:
