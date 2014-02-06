@@ -1,6 +1,9 @@
 ENV["TEST"] = "true"
 ENV["AUTOLOAD_SPROCKETS"] = "false"
 
+#require 'coveralls'
+#Coveralls.wear!
+
 #require 'simplecov'
 #SimpleCov.start
 
@@ -11,7 +14,6 @@ require "middleman-core/step_definitions"
 require "middleman-sprockets"
 require File.join(PROJECT_ROOT_PATH, 'lib', 'middleman-automatic-clowncar')
 
-#require 'coveralls'
-#Coveralls.wear!
+
 
 
