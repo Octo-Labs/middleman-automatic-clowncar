@@ -18,6 +18,9 @@ module Middleman
         Utils.origin_mtime(@source_dir,@origin)
       end
 
+      def source_file
+        nil
+      end
       # def request_path
       #   @request_path
       # end

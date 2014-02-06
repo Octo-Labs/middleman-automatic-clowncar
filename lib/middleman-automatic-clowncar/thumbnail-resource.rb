@@ -19,6 +19,9 @@ module Middleman
         false
       end
 
+      def source_file
+        nil
+      end
       #def source_file
         #output_dir = File.join(@root_path,@build_dir)
         #dest_path = File.join(output_dir,@path)
