@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "middleman-core", "~> 3.2.2"
   
   spec.add_dependency("mini_magick", ["~> 3.7.0"])
-  spec.add_dependency "fastimage", "~> 1.5.5"
+  spec.add_dependency "fastimage", "~> 1.6.0"
 
   # These are here to make sure that we don't have any collisions with sprockets
   spec.add_dependency "middleman-sprockets", "~> 3.2.0"
