@@ -7,7 +7,6 @@ Feature: Generating SVG clowncars during preview mode
     <%= automatic_clowncar_tag "photos/test-image.jpg", :host => "http://localhost:4567/" %>
     """
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
-    Given some time has passed
     When I cd to "build"
     #Then the following files should not exist:
     #  | photos/test-image.jpg                       |
