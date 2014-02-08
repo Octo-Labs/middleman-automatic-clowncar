@@ -2,7 +2,7 @@ Feature: Generating SVG clowncars during preview mode
 
   Scenario: Basic command
     Given a fixture app "automatic-clowncar-app"
-    And a file named "source/index.html.erb" with:
+    And a file named "source/not-index.html.erb" with:
     """
     <%= automatic_clowncar_tag "photos/test-image.jpg", :host => "http://localhost:4567/" %>
     """
@@ -12,13 +12,13 @@ Feature: Generating SVG clowncars during preview mode
     #Then the following files should not exist:
     #  | photos/test-image.jpg                       |
     Then the following files should exist:
-      | index.html                                  |
+      | not-index.html                                  |
       | photos/test-image.jpg                       |
       | photos/test-image/test-image-small.jpg      |
       | photos/test-image/test-image-medium.jpg     |
       | photos/test-image/test-image-large.jpg      |
     Then we should write some stuff to the console
-    Then the file "index.html" should contain "<object"
+    Then the file "not-index.html" should contain "<object"
     And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-small.jpg);%7D%7D"
     And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-medium.jpg);%7D%7D"
     And the file "index.html" should contain "@media%20screen%20and%20(min-width:401px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-large.jpg);%7D%7D"
