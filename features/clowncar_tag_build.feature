@@ -7,8 +7,8 @@ Feature: Generating SVG clowncars during preview mode
     <%= automatic_clowncar_tag "photos/test-image.jpg", :host => "http://localhost:4567/" %>
     """
     Given a successfully built app at "automatic-clowncar-app" with flags "--verbose"
-    When I cd to "build"
     Given some time has passed
+    When I cd to "build"
     #Then the following files should not exist:
     #  | photos/test-image.jpg                       |
     Then the following files should exist:
@@ -17,6 +17,7 @@ Feature: Generating SVG clowncars during preview mode
       | photos/test-image/test-image-small.jpg      |
       | photos/test-image/test-image-medium.jpg     |
       | photos/test-image/test-image-large.jpg      |
+    Then we should write some stuff to the console
     Then the file "index.html" should contain "<object"
     And the file "index.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-small.jpg);%7D%7D"
     And the file "index.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-medium.jpg);%7D%7D"
