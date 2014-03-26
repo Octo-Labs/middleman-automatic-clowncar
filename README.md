@@ -35,7 +35,8 @@ activate :automatic_clowncar,
     :medium => 400,
     :large => 600
   },
-  :namespace_directory => %w(photos)
+  :namespace_directory => %w(photos),
+  :filetypes => [:jpg, :jpeg, :png]
 ```
 
 At build time the extension will look in `source/photos` and will create
@@ -62,6 +63,12 @@ responsive image.
 ```erb
 <%= automatic_clowncar_tag 'photos/my-photo.jpg' %>
 ```
+
+**Please note :** The directory for the images to be clowncar-ed
+**must** be outside of (and different than) the `source/images`
+directory.  Middleman automatically does some things with `images`
+that interfere with the operation of `middleman-automatic-clowncar`.
+
 
 ## Contributing
 
