@@ -69,6 +69,35 @@ responsive image.
 directory.  Middleman automatically does some things with `images`
 that interfere with the operation of `middleman-automatic-clowncar`.
 
+### Setting the host
+
+Background images in SVG require a full absolute path with host.  You
+have two options for setting this.
+
+1.  You can set the `:host` option in the call to `automatic_clowncar_tag`.
+
+```
+<%= automatic_clowncar_tag 'photos/my-photo.jpg', :host =>
+'http://localhost:4567' %>
+```
+
+2.  You can set the `:asset_host` configuration variable in `config.rb`.
+
+```
+activate :asset_host
+set :asset_host, 'http://localhost:4567'
+```
+
+Then you'll probably need a different host for your deployed site, so
+you can change the `:asset_host` variable for your build.
+
+```
+configure :build do
+  set :asset_host, 'http://www.octolabs.com'
+end
+```
+
+
 
 ## Contributing
 
