@@ -76,10 +76,9 @@ have two options for setting this.
 
 1.  You can set the `:host` option in the call to `automatic_clowncar_tag`.
 
-```
-<%= automatic_clowncar_tag 'photos/my-photo.jpg', :host =>
-'http://localhost:4567' %>
-```
+    ```
+    <%= automatic_clowncar_tag 'photos/my-photo.jpg', :host => 'http://localhost:4567' %>
+    ```
 
 2.  You can set the `:asset_host` configuration variable in `config.rb`.
 
