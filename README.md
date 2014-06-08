@@ -82,19 +82,19 @@ have two options for setting this.
 
 2.  You can set the `:asset_host` configuration variable in `config.rb`.
 
-```
-activate :asset_host
-set :asset_host, 'http://localhost:4567'
-```
+    ```
+    activate :asset_host
+    set :asset_host, 'http://localhost:4567'
+    ```
 
-Then you'll probably need a different host for your deployed site, so
-you can change the `:asset_host` variable for your build.
+    Then you'll probably need a different host for your deployed site, so
+    you can change the `:asset_host` variable for your build.
 
-```
-configure :build do
-  set :asset_host, 'http://www.octolabs.com'
-end
-```
+    ```
+    configure :build do
+      set :asset_host, 'http://www.octolabs.com'
+    end
+    ```
 
 
 
