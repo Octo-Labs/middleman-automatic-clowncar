@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "middleman-core", "> 3.2.2"
+  spec.add_dependency "middleman-core", "3.2.2"
 
   spec.add_dependency("mini_magick", ["~> 3.7.0"])
   spec.add_dependency "fastimage", "~> 1.6.0"
