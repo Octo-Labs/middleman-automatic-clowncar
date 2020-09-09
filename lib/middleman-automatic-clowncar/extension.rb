@@ -41,20 +41,6 @@ module Middleman
           dir = Pathname.new(app.source_dir)
           glob = "#{dir}/{#{namespace}}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
           files = Dir[glob]
-
-          # don't build the files until after build
-          #after_build do |builder|
-            #puts "Generating automatic clowncar images"
-            #files.each do |file|
-              #path = file.gsub(source_dir, '')
-              #specs = ThumbnailGenerator.specs(path, sizes, source_dir)
-              #ThumbnailGenerator.generate(source_dir, File.join(root, build_dir), path, specs)
-            #end
-          #end
-
-          #app.sitemap.register_resource_list_manipulator(:thumbnailer, SitemapExtension.new(self), true)
-
-          #app.use Rack, Extension.options_hash
         end
       end
 
@@ -78,7 +64,7 @@ module Middleman
       end
 
       def get_image_path(name, path, is_relative, fallback_host)
-        #puts "@@@@@@@ calling get_image_path for #{path}"
+        #puts "@@@@@@@ calling get_image_path for name:#{name} path:#{path}, is_relative:#{is_relative}, fallback_host:#{fallback_host}"
         begin
           uri = URI(path)
         rescue URI::InvalidURIError
@@ -94,9 +80,9 @@ module Middleman
 
           if is_relative
             url = app.asset_path(:images, svg_path)
+            # TODO : Previously the images_dir could be configured. Now it seems to be hard coded by middleman?
             images_dir = 'images' # app.images_dir
             url = url.sub("/#{images_dir}/",'/')
-            
             if fallback_host &&is_relative_url?(url)
               File.join(fallback_host, url)
             else

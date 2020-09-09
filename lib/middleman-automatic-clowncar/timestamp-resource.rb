@@ -5,16 +5,9 @@ module Middleman
       attr_accessor :output
 
       def initialize(store, path, origin, source_dir)
-        puts "====================================================="
-        puts store
-        puts path
-        puts origin
-        puts source_dir
-        puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
         @source_dir = source_dir
         @origin = origin
         super(store, path, source_dir.to_s)
-        puts "@metadata = #{@metadata}"
       end
 
       def template?
@@ -43,11 +36,6 @@ module Middleman
       def ignored?
         false
       end
-
-      #def metadata
-        #@local_metadata.dup
-      #end
-
 
     end
   end

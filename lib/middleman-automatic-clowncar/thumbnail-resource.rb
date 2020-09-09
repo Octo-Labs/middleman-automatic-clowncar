@@ -63,10 +63,6 @@ module Middleman
         false
       end
 
-      #def metadata
-        #@local_metadata.dup
-      #end
-
     end
   end
 end

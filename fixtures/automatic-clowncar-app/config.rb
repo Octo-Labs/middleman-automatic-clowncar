@@ -1,4 +1,3 @@
-set :images_dir, 'images'
 activate :automatic_clowncar,
   :sizes => {
     :small => 200,
