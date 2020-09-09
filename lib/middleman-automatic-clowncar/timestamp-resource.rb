@@ -1,13 +1,13 @@
 module Middleman
   module AutomaticClowncar
     class TimestampResource < ::Middleman::Sitemap::Resource
-      
+
       attr_accessor :output
 
       def initialize(store, path, origin, source_dir)
         @source_dir = source_dir
         @origin = origin
-        super(store, path)
+        super(store, path, source_dir.to_s)
       end
 
       def template?
@@ -36,11 +36,6 @@ module Middleman
       def ignored?
         false
       end
-
-      def metadata
-        @local_metadata.dup
-      end
-
 
     end
   end

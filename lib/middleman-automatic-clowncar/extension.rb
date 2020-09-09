@@ -11,9 +11,9 @@ require 'fastimage'
 module Middleman
   module AutomaticClowncar
     class Extension < Middleman::Extension
-      
+
       SVG_TEMPLATE = "<svg viewBox='0 0 ::width:: ::height::' preserveAspectRatio='xMidYMid meet' xmlns='http://www.w3.org/2000/svg'><style>svg{background-size:100% 100%;background-repeat:no-repeat;}::media_queries::</style></svg>"
-      
+
       option :sizes, {}, "The sizes of thumbnails to generate"
       option :namespace_directory, ["**"], "The directories that should be clowncared. (Outside of the sprockets images dir.)"
       option :filetypes, [:jpg, :jpeg, :png], "The types of files to use for automatic clowncaring."
@@ -33,31 +33,21 @@ module Middleman
         app.after_configuration do
 
           #stash the source images dir in options for the Rack middleware
-          Extension.options_hash[:source_dir] = source_dir
+          Extension.options_hash[:source_dir] = app.source_dir
 
           sizes = Extension.options_hash[:sizes]
           namespace = Extension.options_hash[:namespace_directory].join(',')
 
-          dir = Pathname.new(source_dir)
+          dir = Pathname.new(app.source_dir)
           glob = "#{dir}/{#{namespace}}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
           files = Dir[glob]
-
-          # don't build the files until after build
-          #after_build do |builder|
-            #puts "Generating automatic clowncar images"
-            #files.each do |file|
-              #path = file.gsub(source_dir, '')
-              #specs = ThumbnailGenerator.specs(path, sizes, source_dir)
-              #ThumbnailGenerator.generate(source_dir, File.join(root, build_dir), path, specs)
-            #end
-          #end
-
-          sitemap.register_resource_list_manipulator(:thumbnailer, SitemapExtension.new(self), true)
-
-          #app.use Rack, Extension.options_hash
         end
       end
-      
+
+      def manipulate_resource_list(resources)
+        SitemapExtension.new(self).manipulate_resource_list(resources)
+      end
+
       def after_configuration
         @ready = true
       end
@@ -74,7 +64,7 @@ module Middleman
       end
 
       def get_image_path(name, path, is_relative, fallback_host)
-        #puts "@@@@@@@ calling get_image_path for #{path}"
+        #puts "@@@@@@@ calling get_image_path for name:#{name} path:#{path}, is_relative:#{is_relative}, fallback_host:#{fallback_host}"
         begin
           uri = URI(path)
         rescue URI::InvalidURIError
@@ -85,14 +75,15 @@ module Middleman
         if uri.host
           path
         else
-          
+
           svg_path = File.join(File.dirname(name),File.basename(name,".*"), path)
 
           if is_relative
             url = app.asset_path(:images, svg_path)
-            url = url.sub("/#{app.images_dir}/",'/')
-            
-            if fallback_host &&is_relative_url?(url)
+            # TODO : Previously the images_dir could be configured. Now it seems to be hard coded by middleman?
+            images_dir = 'images' # app.images_dir
+            url = url.sub("/#{images_dir}/",'/')
+            if fallback_host && is_relative_url?(url)
               File.join(fallback_host, url)
             else
               url
@@ -150,7 +141,7 @@ module Middleman
 
         width, height = ::FastImage.size(main_abs_path, :raise_on_failure => true)
 
-        
+
         sizes = {}
         Extension.options_hash[:sizes].each_pair do |sname,swidth|
           next if swidth > width
@@ -171,9 +162,9 @@ module Middleman
         #puts "name for generate_svg = #{name}"
         #puts "options for generate_svg = #{options}"
         sizes, width, height = get_image_sizes(name, options)
-        
+
         fallback_host = false
-        if is_relative 
+        if is_relative
           test_path = app.asset_path(:images, "#{name}.svg")
           if is_relative_url?(test_path)
             if options.has_key?(:host)
@@ -197,17 +188,12 @@ module Middleman
         Extension.svg_files_to_generate << [name, options]
       end
 
-      
 
-
-
-      
       helpers do
         def automatic_clowncar_tag(name, options={})
           internal = ""
 
           if options[:fallback]
-            
             fallback = File.basename thumbnail_url(name,:small)
             fallback_path = extensions[:automatic_clowncar].get_image_path(name, fallback, true, false)
             internal = %{<!--[if lte IE 8]><img src="#{fallback_path}"><![endif]-->}
@@ -220,7 +206,7 @@ module Middleman
             #else
             #  width = extensions[:automatic_clowncar].options.sizes.map{|k,v| v }.sort.last
             #end
-            
+
             object_style = "max-width:#{width}px;"
           end
 
@@ -235,7 +221,7 @@ module Middleman
 
         def thumbnail_specs(image, name)
           sizes = Extension.options_hash[:sizes]
-          ThumbnailGenerator.specs(image, sizes, source_dir)
+          ThumbnailGenerator.specs(image, sizes, app.source_dir)
         end
 
         def thumbnail_url(image, name, options = {})

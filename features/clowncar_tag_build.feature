@@ -175,6 +175,6 @@ Feature: Generating SVG clowncars during preview mode
     And the file "testfile.html" should contain "@media%20screen%20and%20(max-width:200px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-small.jpg);%7D%7D"
     And the file "testfile.html" should contain "@media%20screen%20and%20(min-width:201px)%20and%20(max-width:400px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-medium.jpg);%7D%7D"
     And the file "testfile.html" should contain "@media%20screen%20and%20(min-width:401px)%20and%20(max-width:600px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/test-image-large.jpg);%7D%7D"
-    And the file "testfile.html" should contain "@media%20screen%20and%20(min-width:601px)%7Bsvg%7Bbackground-image:url(http://localhost:4567/photos/test-image/../test-image.jpg);%7D%7D"
+    And the file "testfile.html" should contain "@media%20screen%20and%20(min-width:601px)%7Bsvg%7Bbackground-image:url(/photos/test-image/../test-image.jpg);%7D%7D"
 
 

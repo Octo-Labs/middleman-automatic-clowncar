@@ -1,5 +1,5 @@
 Given(/^the file "(.*?)" has been overwritten with "(.*?)"$/) do |file1,file2|
-  FileUtils.cp File.join(current_dir,file2), File.join(current_dir,file1)
+  FileUtils.cp File.join(expand_path('.'),file2), File.join(expand_path('.'),file1)
 end
 
 Given(/^some time has passed$/) do
@@ -7,8 +7,8 @@ Given(/^some time has passed$/) do
 end
 
 Then(/^we should write some stuff to the console$/) do
-  puts "here's index.html"
-  puts File.open(File.join(current_dir,"index.html")).read
-  puts "------"
-  puts File.open(File.join(current_dir,"photos/test-image/test-image-small.jpg"),'rb').read
+  puts "here's testfile.html"
+  puts File.open(File.join(expand_path('.'),"testfile.html")).read
+  #puts "------"
+  #puts File.open(File.join(expand_path('.'),"photos/test-image/test-image-small.jpg"),'rb').read
 end

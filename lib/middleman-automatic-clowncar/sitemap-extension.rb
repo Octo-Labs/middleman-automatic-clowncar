@@ -2,8 +2,9 @@ module Middleman
   module AutomaticClowncar
     class SitemapExtension
 
-      def initialize(app)
-        @app = app
+      def initialize(extension)
+        @extension = extension
+        @app = extension.app
       end
 
       # Add sitemap resource for every image in the sprockets load path
@@ -24,9 +25,9 @@ module Middleman
               default_resource = resources.select{|r| r.destination_path == spec[:name]}
               resources = resources - default_resource
             end
-            dest_path = File.join(@app.root_path,@app.build_dir, spec[:name])
+            dest_path = File.join(@app.root_path,'build', spec[:name])
             source = File.exists?(dest_path) ? dest_path : file
-            resource_list << Middleman::AutomaticClowncar::ThumbnailResource.new(@app.sitemap,spec[:name],spec[:dimensions],file,@app.root_path,@app.build_dir,@app.source_dir)
+            resource_list << Middleman::AutomaticClowncar::ThumbnailResource.new(@app.sitemap,spec[:name],spec[:dimensions],file,@app.root_path,'build',@app.source_dir)
             #resource_list << Middleman::Sitemap::Resource.new(@app.sitemap, spec[:name], source) unless name == :original
           end
           fname = specs.first[1][:name]
