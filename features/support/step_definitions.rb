@@ -7,8 +7,8 @@ Given(/^some time has passed$/) do
 end
 
 Then(/^we should write some stuff to the console$/) do
-  puts "here's index.html"
-  puts File.open(File.join(expand_path('.'),"index.html")).read
-  puts "------"
-  puts File.open(File.join(expand_path('.'),"photos/test-image/test-image-small.jpg"),'rb').read
+  puts "here's testfile.html"
+  puts File.open(File.join(expand_path('.'),"testfile.html")).read
+  #puts "------"
+  #puts File.open(File.join(expand_path('.'),"photos/test-image/test-image-small.jpg"),'rb').read
 end
