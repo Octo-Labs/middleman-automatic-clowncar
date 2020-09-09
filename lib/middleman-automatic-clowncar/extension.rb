@@ -83,7 +83,7 @@ module Middleman
             # TODO : Previously the images_dir could be configured. Now it seems to be hard coded by middleman?
             images_dir = 'images' # app.images_dir
             url = url.sub("/#{images_dir}/",'/')
-            if fallback_host &&is_relative_url?(url)
+            if fallback_host && is_relative_url?(url)
               File.join(fallback_host, url)
             else
               url
