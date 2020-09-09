@@ -169,6 +169,8 @@ module Middleman
           if is_relative_url?(test_path)
             if options.has_key?(:host)
               fallback_host = options[:host]
+            elsif app.config[:asset_host]
+              fallback_host = app.config[:asset_host]
             else
               warn "WARNING: Inline clowncar images require absolute paths. Please set a :host value"
             end
