@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "middleman", "~> 4.3.0"
   spec.add_development_dependency "bundler", "~> 1.5"
-  #spec.add_development_dependency "rake"
+  spec.add_development_dependency "rake"
   spec.add_development_dependency "capybara", "~> 2.5.0"
   spec.add_development_dependency "cucumber", "~> 2.0"
   spec.add_development_dependency "aruba",    "~> 0.14.0"
