@@ -33,12 +33,12 @@ module Middleman
         app.after_configuration do
 
           #stash the source images dir in options for the Rack middleware
-          Extension.options_hash[:source_dir] = source_dir
+          Extension.options_hash[:source_dir] = app.source_dir
 
           sizes = Extension.options_hash[:sizes]
           namespace = Extension.options_hash[:namespace_directory].join(',')
 
-          dir = Pathname.new(source_dir)
+          dir = Pathname.new(app.source_dir)
           glob = "#{dir}/{#{namespace}}/*.{#{Extension.options_hash[:filetypes].join(',')}}"
           files = Dir[glob]
 
@@ -52,10 +52,14 @@ module Middleman
             #end
           #end
 
-          sitemap.register_resource_list_manipulator(:thumbnailer, SitemapExtension.new(self), true)
+          #app.sitemap.register_resource_list_manipulator(:thumbnailer, SitemapExtension.new(self), true)
 
           #app.use Rack, Extension.options_hash
         end
+      end
+
+      def manipulate_resource_list(resources)
+        SitemapExtension.new(self).manipulate_resource_list(resources)
       end
       
       def after_configuration
@@ -90,7 +94,8 @@ module Middleman
 
           if is_relative
             url = app.asset_path(:images, svg_path)
-            url = url.sub("/#{app.images_dir}/",'/')
+            images_dir = 'images' # app.images_dir
+            url = url.sub("/#{images_dir}/",'/')
             
             if fallback_host &&is_relative_url?(url)
               File.join(fallback_host, url)
@@ -235,7 +240,7 @@ module Middleman
 
         def thumbnail_specs(image, name)
           sizes = Extension.options_hash[:sizes]
-          ThumbnailGenerator.specs(image, sizes, source_dir)
+          ThumbnailGenerator.specs(image, sizes, app.source_dir)
         end
 
         def thumbnail_url(image, name, options = {})

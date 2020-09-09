@@ -12,7 +12,7 @@ module Middleman
         @root_path = root_path
         @build_dir = build_dir
         @source_dir = source_dir
-        super(store, path)
+        super(store, path, source_dir.to_s)
       end
 
       def template?
@@ -63,9 +63,9 @@ module Middleman
         false
       end
 
-      def metadata
-        @local_metadata.dup
-      end
+      #def metadata
+        #@local_metadata.dup
+      #end
 
     end
   end

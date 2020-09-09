@@ -14,6 +14,7 @@ Feature: Generating thumbnails
   Scenario: Basic useage during preview
     Given a fixture app "automatic-clowncar-app"
     And the Server is running at "automatic-clowncar-app"
+    #Given the Server is running at "automatic-clowncar-app"
     When I go to "/photos/test-image/test-image-small.jpg"
     Then the content type should be "image/jpeg"
     When I go to "/photos/test-image/test-image-medium.jpg"

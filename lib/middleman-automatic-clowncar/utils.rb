@@ -30,7 +30,7 @@ module Middleman
 
       # strip the source_dir and any leading slashes
       def self.naked_origin(source_dir,origin)
-        origin.gsub(source_dir + File::SEPARATOR, '')
+        origin.gsub(source_dir.to_s + File::SEPARATOR, '')
       end
 
     end
