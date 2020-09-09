@@ -11,9 +11,9 @@ require 'fastimage'
 module Middleman
   module AutomaticClowncar
     class Extension < Middleman::Extension
-      
+
       SVG_TEMPLATE = "<svg viewBox='0 0 ::width:: ::height::' preserveAspectRatio='xMidYMid meet' xmlns='http://www.w3.org/2000/svg'><style>svg{background-size:100% 100%;background-repeat:no-repeat;}::media_queries::</style></svg>"
-      
+
       option :sizes, {}, "The sizes of thumbnails to generate"
       option :namespace_directory, ["**"], "The directories that should be clowncared. (Outside of the sprockets images dir.)"
       option :filetypes, [:jpg, :jpeg, :png], "The types of files to use for automatic clowncaring."
@@ -47,7 +47,7 @@ module Middleman
       def manipulate_resource_list(resources)
         SitemapExtension.new(self).manipulate_resource_list(resources)
       end
-      
+
       def after_configuration
         @ready = true
       end
@@ -75,7 +75,7 @@ module Middleman
         if uri.host
           path
         else
-          
+
           svg_path = File.join(File.dirname(name),File.basename(name,".*"), path)
 
           if is_relative
@@ -141,7 +141,7 @@ module Middleman
 
         width, height = ::FastImage.size(main_abs_path, :raise_on_failure => true)
 
-        
+
         sizes = {}
         Extension.options_hash[:sizes].each_pair do |sname,swidth|
           next if swidth > width
@@ -162,9 +162,9 @@ module Middleman
         #puts "name for generate_svg = #{name}"
         #puts "options for generate_svg = #{options}"
         sizes, width, height = get_image_sizes(name, options)
-        
+
         fallback_host = false
-        if is_relative 
+        if is_relative
           test_path = app.asset_path(:images, "#{name}.svg")
           if is_relative_url?(test_path)
             if options.has_key?(:host)
@@ -188,17 +188,12 @@ module Middleman
         Extension.svg_files_to_generate << [name, options]
       end
 
-      
 
-
-
-      
       helpers do
         def automatic_clowncar_tag(name, options={})
           internal = ""
 
           if options[:fallback]
-            
             fallback = File.basename thumbnail_url(name,:small)
             fallback_path = extensions[:automatic_clowncar].get_image_path(name, fallback, true, false)
             internal = %{<!--[if lte IE 8]><img src="#{fallback_path}"><![endif]-->}
@@ -211,7 +206,7 @@ module Middleman
             #else
             #  width = extensions[:automatic_clowncar].options.sizes.map{|k,v| v }.sort.last
             #end
-            
+
             object_style = "max-width:#{width}px;"
           end
 

@@ -1,7 +1,7 @@
 module Middleman
   module AutomaticClowncar
     class TimestampResource < ::Middleman::Sitemap::Resource
-      
+
       attr_accessor :output
 
       def initialize(store, path, origin, source_dir)
