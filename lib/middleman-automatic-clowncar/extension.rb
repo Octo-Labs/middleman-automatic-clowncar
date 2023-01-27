@@ -195,6 +195,22 @@ module Middleman
           Extension.options_hash[:sizes]
         end
 
+        def automatic_clowncar_escape(str)
+          alpha = "a-zA-Z"
+          alnum = "#{alpha}\\d"
+          unreserved = "\\-_.!~*'()#{alnum}"
+          reserved = ";/?:@&=+$,\\[\\]"
+          unsafe = Regexp.new("[^#{unreserved}#{reserved}]")
+          str.gsub(unsafe) do
+            us = $&
+              tmp = ''
+            us.each_byte do |uc|
+              tmp << sprintf('%%%02X', uc)
+            end
+            tmp
+          end.force_encoding(Encoding::US_ASCII)
+        end
+
         def automatic_clowncar_tag(name, options={})
           internal = ""
 
@@ -220,7 +236,9 @@ module Middleman
             %Q{<object type="image/svg+xml" style="#{object_style}" data-aspect-ratio="#{width.to_f/height.to_f}" data="#{url}">#{internal}</object>}
           else
             data = extensions[:automatic_clowncar].generate_svg(name, true, options)
-            %Q{<object type="image/svg+xml" style="#{object_style}" data-aspect-ratio="#{width.to_f/height.to_f}" data="data:image/svg+xml,#{::URI.escape(data)}">#{internal}</object>}
+            puts "data ==============="
+            puts data
+            %Q{<object type="image/svg+xml" style="#{object_style}" data-aspect-ratio="#{width.to_f/height.to_f}" data="data:image/svg+xml,#{automatic_clowncar_escape(data)}">#{internal}</object>}
           end
         end
 
