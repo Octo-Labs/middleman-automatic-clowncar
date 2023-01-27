@@ -191,6 +191,10 @@ module Middleman
 
 
       helpers do
+        def automatic_clowncar_sizes
+          Extension.options_hash[:sizes]
+        end
+
         def automatic_clowncar_tag(name, options={})
           internal = ""
 
