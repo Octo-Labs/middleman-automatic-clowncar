@@ -75,7 +75,6 @@ module Middleman
         if uri.host
           path
         else
-
           svg_path = File.join(File.dirname(name),File.basename(name,".*"), path)
 
           if is_relative
@@ -158,8 +157,6 @@ module Middleman
 
 
       def generate_svg(name, is_relative, options)
-        #puts "name for generate_svg = #{name}"
-        #puts "options for generate_svg = #{options}"
         sizes, width, height = get_image_sizes(name, options)
 
         fallback_host = false
@@ -168,8 +165,10 @@ module Middleman
           if is_relative_url?(test_path)
             if options.has_key?(:host)
               fallback_host = options[:host]
-            elsif app.config[:asset_host]
+            elsif app.config[:asset_host] # this is for middleman 2 & 3, (and maybe early 4?)
               fallback_host = app.config[:asset_host]
+            elsif app.extensions[:asset_host] # this is for middleman 4+
+              fallback_host = app.extensions[:asset_host].options.host
             else
               warn "WARNING: Inline clowncar images require absolute paths. Please set a :host value"
             end
@@ -236,8 +235,6 @@ module Middleman
             %Q{<object type="image/svg+xml" style="#{object_style}" data-aspect-ratio="#{width.to_f/height.to_f}" data="#{url}">#{internal}</object>}
           else
             data = extensions[:automatic_clowncar].generate_svg(name, true, options)
-            puts "data ==============="
-            puts data
             %Q{<object type="image/svg+xml" style="#{object_style}" data-aspect-ratio="#{width.to_f/height.to_f}" data="data:image/svg+xml,#{automatic_clowncar_escape(data)}">#{internal}</object>}
           end
         end
